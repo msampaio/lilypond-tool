@@ -9,5 +9,5 @@ Use
 ---
 
 1. Configure `instruments.json` and `config.cfg` keeping their structures.
-2. Run `lilytool --create y` to create all Lilypond notes files for all instruments.
-3. Run `lilytool -a` h to see compilation options.
+2. Run `lilytool.py --create y` to create all Lilypond notes files for all instruments.
+3. Run `lilytool.py -h` to see compilation options.
