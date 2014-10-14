@@ -77,7 +77,10 @@ class Score(object):
                 s += '\t{} = "{}"\n'.format(k, v)
 
         if self.metadata.dedication != 'None':
-            s += '\t{} = "{}"\n'.format('dedication', self.metadata.dedication)
+            s += '\tdedication = "{}"\n'.format(self.metadata.dedication)
+
+        if self.metadata.copyright != 'None':
+            s += '\tcopyright = "© {}"\n'.format(self.metadata.copyright)
 
         s += '}\n'
         return s
