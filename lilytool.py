@@ -235,7 +235,7 @@ def get_instruments(metadata, instrument_file=INSTRUMENT_FILE):
 
 
 def get_lily_file(lily_name, metadata):
-    filename = os.path.join(metadata.notes_path, lily_name + '.ly')
+    filename = os.path.join(metadata.init_path, lily_name + '.ly')
     with open(filename, 'r') as f:
         return f.read()
 
@@ -243,6 +243,7 @@ def get_lily_file(lily_name, metadata):
 def make_score(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
     metadata = get_metadata(config_file)
     instruments = get_instruments(metadata, instrument_file)
+
     score = Score()
     score.metadata = metadata
     score.instruments = instruments
@@ -250,7 +251,22 @@ def make_score(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
     score.lily_layout = get_lily_file('layout', metadata)
     score.lily_paper = get_lily_file('paper', metadata)
     score.lily_newcommand = get_lily_file('newcommand', metadata)
+
+    if not os.path.exists(metadata.notes_path):
+        os.mkdir(metadata.notes_path)
+        for filename in ['global', 'newcommand', 'layout', 'paper']:
+            f = os.path.join(metadata.init_path, filename + '.ly')
+            shutil.copy(f, metadata.notes_path)
+
     return score
+
+def clean(score):
+    try:
+        shutil.rmtree(score.metadata.output_path)
+    except: print('No such file')
+    try:
+        shutil.rmtree(score.metadata.tmp_path)
+    except: print('No such file')
 
 
 def main(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
@@ -260,10 +276,10 @@ def main(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
     parser.add_argument("-p", "--pdf_part", help="Make pdf and midi files from given part", dest='instrument')
     parser.add_argument("-a", "--pdf_all", help="Make pdf and midi files from score and all parts", action='store_true')
     parser.add_argument("--create", help="Create notes lilypond files [y,n]", dest='overwrite')
-    parser.add_argument("-c", "--clear", help="Remove output and temporary files", action='store_true')
+    parser.add_argument("-c", "--clean", help="Remove output and temporary files", action='store_true')
+    parser.add_argument("--all_clean", help="Reset project", action='store_true')
     args = parser.parse_args()
     
-
     score = make_score(config_file, instrument_file)
     if any([args.scores, args.pdf_score, args.instrument, args.pdf_all]):
         score.make_all_scores()
@@ -279,12 +295,13 @@ def main(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
         score.run_lilypond()
         score.run_lilypond(instruments)
 
-    elif args.clear:
+    elif args.clean:
+        clean(score)
+
+    elif args.all_clean:
+        clean(score)
         try:
-            shutil.rmtree(score.metadata.output_path)
-        except: print('No such file')
-        try:
-            shutil.rmtree(score.metadata.tmp_path)
+            shutil.rmtree(score.metadata.notes_path)
         except: print('No such file')
 
     elif args.overwrite:
@@ -293,7 +310,6 @@ def main(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
         else:
             score.make_notes_files(False)
 
-    
 
 if __name__ == '__main__':
     main(CONFIG_FILE, INSTRUMENT_FILE)
