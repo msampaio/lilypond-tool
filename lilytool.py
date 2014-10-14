@@ -71,10 +71,14 @@ class Score(object):
 
     def _make_lily_header(self):
         s = '\header{\n'
-        for k in ['title', 'composer', 'dedication', 'opus', 'date']:
+        for k in ['title', 'composer', 'opus', 'date']:
             v = getattr(self.metadata, k)
             if v:
                 s += '\t{} = "{}"\n'.format(k, v)
+
+        if self.metadata.dedication != 'None':
+            s += '\t{} = "{}"\n'.format('dedication', self.metadata.dedication)
+
         s += '}\n'
         return s
 
