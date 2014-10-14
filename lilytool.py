@@ -90,7 +90,7 @@ class Score(object):
         s += '{}'.format(self._make_lily_score(instrument))
         s += '\t\midi {{ }}\n\t{}}}\n{}}}\n'.format(self.lily_layout, self.lily_paper)
         return s
-        
+
     def make_tmp_lily_files(self):
         for i in self.instruments:
             filename = os.path.join(self.metadata.tmp_path, i.lily_name + '.ly')
@@ -100,7 +100,7 @@ class Score(object):
             basename = extra + '.ly'
             origin_name = os.path.join(self.metadata.notes_path, basename)
             dest_name = os.path.join(self.metadata.tmp_path, basename)
-            
+
             with open(origin_name, 'r') as f:
                 lily_data = f.read()
             with open(dest_name, 'w') as f:
@@ -120,13 +120,13 @@ class Score(object):
         filename = os.path.join(self.metadata.tmp_path, f)
         with open(filename, 'w') as f:
             f.write(s)
-            
+
     def make_all_scores(self):
         self.make_lilypond_score()
         for i in self.instruments:
             self.make_lilypond_score(i)
         self.make_tmp_lily_files()
-            
+
     def run_lilypond(self, instruments=None):
         def mount_call(filename):
             cur = os.path.abspath('.')
@@ -149,7 +149,7 @@ class Score(object):
             if type(instruments) != list:
                 instruments = list(instruments)
             for i in instruments:
-                basename = 'part_{}.ly'.format(i) 
+                basename = 'part_{}.ly'.format(i)
                 filename = os.path.join(self.metadata.tmp_path, basename)
                 subprocess.call(mount_call(filename))
         else:
@@ -293,7 +293,7 @@ def main(config_file=CONFIG_FILE, instrument_file=INSTRUMENT_FILE):
     parser.add_argument("-c", "--clean", help="Remove output and temporary files", action='store_true')
     parser.add_argument("--all_clean", help="Reset project", action='store_true')
     args = parser.parse_args()
-    
+
     score = make_score(config_file, instrument_file)
     if any([args.scores, args.pdf_score, args.instrument, args.pdf_all]):
         score.make_all_scores()
