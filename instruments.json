@@ -1,0 +1,108 @@
+{
+    "Madeiras": {
+        "Flauta": {
+            "name": "Flauta",
+            "abbrv": "Fl.",
+            "midi": "flute",
+            "lily_name": "flauta",
+            "transposition": "None"
+        },
+        "Oboe": {
+            "name": "Oboe",
+            "abbrv": "Fl.",
+            "midi": "oboe",
+            "lily_name": "oboe",
+            "transposition": "None"
+        },
+        "Clarinete": {
+            "name": "Clarinete Bb",
+            "abbrv": "Cl.Bb",
+            "midi": "clarinet",
+            "lily_name": "clarinetebb",
+            "transposition": "bes"
+        },
+        "Fagote": {
+            "name": "Fagote",
+            "abbrv": "Fg.",
+            "midi": "bassoon",
+            "lily_name": "fagote",
+            "transposition": "None"
+        }
+    },
+    "Metais": {
+        "Trompa": {
+            "name": "Trompa F",
+            "abbrv": "Tpa.F",
+            "midi": "french horn",
+            "lily_name": "trompa",
+            "transposition": "f"
+        },
+        "Trompete": {
+            "name": "Trompete Bb",
+            "abbrv": "Tpt.Bb",
+            "midi": "trumpet",
+            "lily_name": "trompete",
+            "transposition": "bes"
+        },
+        "Trombone": {
+            "name": "Trombone",
+            "abbrv": "Tbn.",
+            "midi": "trombone",
+            "lily_name": "trombone",
+            "transposition": "None"
+        },
+        "Tuba": {
+            "name": "Tuba",
+            "abbrv": "Tb.",
+            "midi": "tuba",
+            "lily_name": "tuba",
+            "transposition": "None"
+        }
+    },
+    "Percussao": {
+        "Percussao": {
+            "name": "Percussao",
+            "abbrv": "Perc",
+            "midi": "woodblock",
+            "lily_name": "percussao",
+            "transposition": "None"
+        }
+    },
+    "Cordas": {
+        "Violino I": {
+            "name": "Violino I",
+            "abbrv": "Vln.I",
+            "midi": "string ensemble 1",
+            "lily_name": "violinoone",
+            "transposition": "None"
+        },
+        "Violino II": {
+            "name": "Violino II",
+            "abbrv": "Vln.II",
+            "midi": "string ensemble 1",
+            "lily_name": "violinotwo",
+            "transposition": "None"
+        },
+        "Viola": {
+            "name": "Viola",
+            "abbrv": "Vla.",
+            "midi": "string ensemble 1",
+            "lily_name": "viola",
+            "transposition": "None"
+        },
+        "Violoncelo": {
+            "name": "Violoncelo",
+            "abbrv": "Vlc.",
+            "midi": "string ensemble 1",
+            "lily_name": "violoncelo",
+            "transposition": "None"
+        },
+        "Contrabaixo": {
+            "name": "Contrabaixo",
+            "abbrv": "Cb.",
+            "midi": "string ensemble 1",
+            "lily_name": "contrabaixo",
+            "transposition": "None"
+        }
+    }
+}
