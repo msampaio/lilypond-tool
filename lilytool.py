@@ -156,8 +156,19 @@ class Score(object):
             filename = os.path.join(self.metadata.tmp_path, 'score.ly')
             subprocess.call(mount_call(filename))
 
-    # FIXME: add global
     def make_notes_files(self, overwrite=False):
+        global_file = os.path.join(self.metadata.notes_path, 'global.ly')
+        if os.path.exists(global_file) and not overwrite:
+            print("The file {} already exists".format('global.ly'))
+        else:
+            s = '\\version "{}"\n\n'.format(self.metadata.version)
+            s += '\\include "newcommand.ly"\n'
+            for section in self.metadata.sections:
+                s += '\n{}{}global = '.format(self.metadata.slug, section)
+                s += '{\n\t\\globaldefault\n}\n'
+            with open(global_file, 'w') as f:
+                f.write(s)
+
         for i in self.instruments:
             if os.path.exists(i.filename) and not overwrite:
                 print("The file {} already exists".format(i.filename))
@@ -166,7 +177,7 @@ class Score(object):
                 s += '\\include "newcommand.ly"\n'
                 for section in self.metadata.sections:
                     s += '\n{}{}{} = '.format(self.metadata.slug, section, i.lily_name)
-                    s += '= \\relative c\' {\n\t\\globaldefault\n}\n'
+                    s += '\\relative c\' {\n}\n'
                 with open(i.filename, 'w') as f:
                     f.write(s)
 
