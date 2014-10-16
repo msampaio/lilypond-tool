@@ -57,24 +57,27 @@ class Score(object):
         if instrument:
             s += '\t\set Score.skipBars = ##t'
             i = [instr for instr in self.instruments if instr == instrument][0]
-            s += i.make_staff(self.metadata.sections, self.metadata.slug)
+            s += i.make_staff(self.metadata.sections, self.metadata.slug, False)
         else:
             families = self.metadata.score_groups
             for family in families:
                 s += '\\new StaffGroup <<\n'
                 for i in self.instruments:
                     if i.family == family:
-                        s += i.make_staff(self.metadata.sections, self.metadata.slug)
+                        s += i.make_staff(self.metadata.sections, self.metadata.slug, True)
                 s += '>>\n'
         s += '\t>>\n'
         return s
 
-    def _make_lily_header(self):
+    def _make_lily_header(self, instrument=None):
         s = '\header{\n'
         for k in ['title', 'composer', 'opus', 'date']:
             v = getattr(self.metadata, k)
             if v:
                 s += '\t{} = "{}"\n'.format(k, v)
+
+        if instrument:
+            s += '\tinstrument = "{}"\n'.format(instrument.name)
 
         if self.metadata.dedication != 'None':
             s += '\tdedication = "{}"\n'.format(self.metadata.dedication)
@@ -86,7 +89,7 @@ class Score(object):
         return s
 
     def _make_lily_book(self, instrument=None):
-        s = '\\book {{\n{}'.format(self._make_lily_header())
+        s = '\\book {{\n{}'.format(self._make_lily_header(instrument))
         s += '{}'.format(self._make_lily_score(instrument))
         s += '\t\midi {{ }}\n\t{}}}\n{}}}\n'.format(self.lily_layout, self.lily_paper)
         return s
@@ -199,10 +202,11 @@ class Instrument(object):
         return '\n'.join(['\t\t{{\n\t{}\n\t\t}}'.format(seq) for seq in z])
 
 
-    def make_staff(self, sections, slug):
+    def make_staff(self, sections, slug, is_score=True):
         s = '\t\\new Staff <<\n'
-        s += '\t\t\set Staff.instrumentName = \markup {{\hcenter-in #5 \"{}\"}}\n'.format(self.name)
-        s += '\t\t\set Staff.shortInstrumentName = \markup {{\hcenter-in #5 "{}"}}\n'.format(self.abbrv)
+        if is_score:
+            s += '\t\t\set Staff.instrumentName = \markup {{\hcenter-in #5 \"{}\"}}\n'.format(self.name)
+            s += '\t\t\set Staff.shortInstrumentName = \markup {{\hcenter-in #5 "{}"}}\n'.format(self.abbrv)
         s += '\t\t\set Staff.midiInstrument = "{}"\n'.format(self.midi)
         s += self._make_sections_list(sections, slug)
         s += '\n\t>>\n'
